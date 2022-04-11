@@ -4,6 +4,7 @@
 # include <functional>
 # include <iostream>
 # include <string>
+# include "color.hpp"
 # include "../Gui.hpp"
 # include "../Structs.hpp"
 # include "../GuiDrawer.hpp"
@@ -69,16 +70,20 @@ public:
 
     void            set_hidden(bool hide);
     void            set_color(int color);
-    void            set_x(int x);
-    void            set_y(int y);
-    void            set_width(int width);
-    void            set_height(int height);
+    virtual void    set_x(int x);
+    virtual void    set_y(int y);
+    virtual void    set_width(int width);
+    virtual void    set_height(int height);
+    void            set_border_color(int color);
+    void            set_border_size(int size);
 
     std::string const& get_name() const;
     int get_x() const;
     int get_y() const;
     int get_x_max() const;
     int get_y_max() const;
+    int get_width() const;
+    int get_height() const;
     virtual AGuiObject *get_object_by_position(int x, int y);
     virtual AGuiObject *clone() const = 0;
     virtual void    draw(Image win_image) const = 0;
@@ -219,28 +224,39 @@ void AGuiObject::set_color(int color) {
 
 void    AGuiObject::set_x(int x) {
     this->x = x;
-    x_max = x + width;
+    this->x_max = x + width;
 }
 
 void    AGuiObject::set_y(int y) {
     this->y = y;
-    y_max = y + height;
+    this->y_max = y + height;
 }
 
 void    AGuiObject::set_width(int width) {
     this->width = width;
-    x_max = x + width;
+    this->x_max = x + width;
 }
 void    AGuiObject::set_height(int height) {
     this->height = height;
-    y_max = y + height;
+    this->y_max = y + height;
 }
+
+void    AGuiObject::set_border_color(int color) {
+    this->border_color = color;
+}
+
+void    AGuiObject::set_border_size(int size) {
+    this->border_size = size;
+}
+
 
 std::string const& AGuiObject::get_name() const { return name;}
 int AGuiObject::get_x() const { return x;}
 int AGuiObject::get_y() const { return y;}
 int AGuiObject::get_x_max() const { return x_max;}
 int AGuiObject::get_y_max() const { return y_max;}
+int AGuiObject::get_width() const {return width;}
+int AGuiObject::get_height() const {return height;}
 AGuiObject *AGuiObject::get_object_by_position(int x, int y) {
     return this;
 }

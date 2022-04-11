@@ -31,10 +31,12 @@ GuiImage::GuiImage(int x,int y, std::string const &name, std::string const &path
     addr = mlx_get_data_addr(img, &bits_per_pixel, &line_length, &endian);
     set_width(width);
     set_height(height);
+    border_size = 0;
 }
 
 void GuiImage::draw(Image win_image) const {
     if (hidden == false) {
+        GuiDrawer::draw_border(win_image, Point(x,y), Point(x_max,y_max), border_size, border_color);
         GuiDrawer::draw_image(win_image, Point(x,y), (int *)addr, width, height);
     }
 }

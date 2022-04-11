@@ -94,12 +94,14 @@ void    GuiDrawer::draw_rectangle(Image &image, Point p1, Point p2, int color)
 void    GuiDrawer::draw_border(Image &image, Point p1, Point p2, int size, int color)
 {
 	int	i;
-	Point pb1(p1.x - size, p1.y - size);
-	Point pb2(p2.x + size, p2.y + size);
-	draw_rectangle(image, pb1, Point(p2.x + size, p1.y), color);
-	draw_rectangle(image, pb1, Point(p1.x, p2.y + size), color);
-	draw_rectangle(image, Point(p2.x, p1.y), pb2, color);
-	draw_rectangle(image, Point(p1.x, p2.y), pb2, color);
+	if (size > 0) {
+		Point pb1(p1.x - size, p1.y - size);
+		Point pb2(p2.x + size, p2.y + size);
+		draw_rectangle(image, pb1, Point(p2.x + size, p1.y), color);
+		draw_rectangle(image, pb1, Point(p1.x, p2.y + size), color);
+		draw_rectangle(image, Point(p2.x, p1.y), pb2, color);
+		draw_rectangle(image, Point(p1.x, p2.y), pb2, color);
+	}
 }
 
 

@@ -13,9 +13,15 @@ public:
     GuiButton(GuiButton const &other);
     GuiButton& operator=(GuiButton const &other);
     ~GuiButton();
-    void set_label_value(std::string const &label);
-    void set_label_size(int size);
-    void set_label_color(int color);
+    void    set_label_value(std::string const &label);
+    void    set_label_size(int size);
+    void    set_label_color(int color);
+
+    void    set_x(int x);
+    void    set_y(int y);
+    void    set_width(int width);
+    void    set_height(int height);
+
     void draw(Image win_image) const;
     AGuiObject *clone() const;
 };
@@ -23,26 +29,28 @@ public:
 GuiButton::GuiButton(Point p, u_int width, u_int height, std::string const & name, std::string const & label)
                     :AGuiObject(p.x, p.y, name), label(p.x, p.y, name, label)
 {
+    color = Color_Carrot_Orange;
     set_width(width);
     set_height(height);
+    printf("label %d, %d\n", this->label.get_x(), this->label.get_y());
     set_label_value(label);
-
+    set_label_size(14);
     desing_events[MouseMove] = [](int x, int y, int btn, void *param) {
         GuiButton *self = (GuiButton *)param;
         if (self) {
             if (self->is_mouse_on) {
                 self->border_size = 6;
-                self->label.size = 30;
-                self->set_label_value("hover in");
+                // self->label.size = 30;
+                self->set_label_size(30);
             }
             else {
                 self->border_size = 1;
-                self->label.size = 14;
-                self->set_label_value("hover out");
+                // self->label.size = 14;
+                self->set_label_size(14);
             }
         }
     };
-
+    printf("label %d, %d\n", this->label.get_x(), this->label.get_y());
 }
 
 GuiButton::GuiButton(GuiButton const &other) {
@@ -61,28 +69,49 @@ GuiButton& GuiButton::operator=(GuiButton const &other) {
 GuiButton::~GuiButton() {}
 
 void GuiButton::set_label_value(std::string const &label) {
-    this->label.value = label;
-    FontDim fdim = GuiFont("./assets/font/timeburner-font/Timeburner-xJB8.ttf").get_string_dim(label, this->label.size);
-    this->label.set_x(this->x +  (this->width - fdim.width) / 2);
-    this->label.set_y(this->y + (this->height - fdim.height) / 2);
+    this->label.set_value(label);
+    this->label.set_x(this->x +  (this->width - this->label.get_width()) / 2);
+    this->label.set_y(this->y + (this->height - this->label.get_height()) / 2);
 }
 
 void GuiButton::set_label_size(int size) {
-    this->label.size = size;
-    FontDim fdim = GuiFont("./assets/font/timeburner-font/Timeburner-xJB8.ttf").get_string_dim(label.value, this->label.size);
-    this->label.set_x(this->x +  (this->width - fdim.width) / 2);
-    this->label.set_y(this->y + (this->height - fdim.height) / 2);
+    this->label.set_size(size);
+    this->label.set_x(this->x +  (this->width - label.get_width()) / 2);
+    this->label.set_y(this->y + (this->height - label.get_height()) / 2);
 }
 
 void GuiButton::set_label_color(int color) {
     label.set_color(color);
 }
 
+void    GuiButton::set_x(int x) {
+    this->x = x;
+    this->x_max = x + width;
+    set_label_size(label.get_size());
+}
+
+void    GuiButton::set_y(int y) {
+    this->y = y;
+    this->y_max = y + height;
+    set_label_size(label.get_size());
+}
+
+void    GuiButton::set_width(int width) {
+    this->width = width;
+    this->x_max = x + width;
+    set_label_size(label.get_size());
+}
+
+void    GuiButton::set_height(int height) {
+    this->height = height;
+    this->y_max = y + height;
+    set_label_size(label.get_size());
+}
 
 void GuiButton::draw(Image win_image) const {
     if (hidden == false) {
         GuiDrawer::draw_border(win_image, Point(x,y), Point(x_max,y_max), border_size, border_color);
-        GuiDrawer::draw_rectangle(win_image, Point(x,y), Point(x_max, y_max), 0);
+        GuiDrawer::draw_rectangle(win_image, Point(x,y), Point(x_max, y_max), color);
         label.draw(win_image);
     }
 }

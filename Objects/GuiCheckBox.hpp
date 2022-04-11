@@ -88,17 +88,15 @@ void GuiCheckBox::set_size(u_int size) {
 }
 
 void GuiCheckBox::set_label_value(std::string const &label) {
-    this->label.value = label;
-    FontDim fdim = GuiFont("./assets/font/timeburner-font/Timeburner-xJB8.ttf").get_string_dim(label, this->label.size);
-    this->label.set_x(x + size + padding);
-    this->label.set_y(y + (this->height - fdim.height) / 2);
+    this->label.set_value(label);
+    this->label.set_x(this->x +  (this->width - this->label.get_width()) / 2);
+    this->label.set_y(this->y + (this->height - this->label.get_height()) / 2);
 }
 
 void GuiCheckBox::set_label_size(int size) {
-    this->label.size = size;
-    FontDim fdim = GuiFont("./assets/font/timeburner-font/Timeburner-xJB8.ttf").get_string_dim(label.value, this->label.size);
-    this->label.set_x(x + size + padding);
-    this->label.set_y(y + (this->height - fdim.height) / 2);
+    this->label.set_size(size);
+    this->label.set_x(this->x +  (this->width - label.get_width()) / 2);
+    this->label.set_y(this->y + (this->height - label.get_height()) / 2);
 }
 
 void GuiCheckBox::set_label_color(int color) {
