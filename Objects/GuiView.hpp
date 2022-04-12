@@ -39,8 +39,16 @@ GuiView::GuiView(GuiView const &other){
 GuiView& GuiView::operator=(GuiView const &other) {
     if (this != &other)
     {
-        this->objects = other.objects;
-        this->objects_map = other.objects_map;
+        this->objects.clear();
+        this->objects_map.clear();
+        for (auto *obj: other.objects)
+        {
+            AGuiObject *co = obj->clone();
+            objects_map.insert(std::pair<std::string, AGuiObject *>(co->get_name(), co));
+            objects.push_back(co);
+        }
+        //     this->objects = other.objects;
+        // this->objects_map = other.objects_map;
         AGuiObject::operator=(other);
     }
     return *this;
