@@ -23,10 +23,17 @@ public:
     GuiCheckBox& operator=(GuiCheckBox const &other);
     ~GuiCheckBox();
     u_int get_size();
-    void set_size(u_int size);
-    void set_label_value(std::string const &label);
-    void set_label_size(int size);
-    void set_label_color(int color);
+    void    set_size(u_int size);
+    void    set_padding(u_int size);
+    void    set_label_value(std::string const &label);
+    void    set_label_size(int size);
+    void    set_label_color(int color);
+
+    void    set_x(int x);
+    void    set_y(int y);
+    void    set_width(int width);
+    void    set_height(int height);
+
     void draw(Image win_image) const;
     AGuiObject *clone() const;
 private:
@@ -87,20 +94,48 @@ void GuiCheckBox::set_size(u_int size) {
     }
 }
 
+void GuiCheckBox::set_padding(u_int size) {
+    padding = size;
+}
+
 void GuiCheckBox::set_label_value(std::string const &label) {
     this->label.set_value(label);
-    this->label.set_x(this->x +  (this->width - this->label.get_width()) / 2);
+    this->label.set_x(this->x + this->width + padding);
     this->label.set_y(this->y + (this->height - this->label.get_height()) / 2);
 }
 
 void GuiCheckBox::set_label_size(int size) {
     this->label.set_size(size);
-    this->label.set_x(this->x +  (this->width - label.get_width()) / 2);
+    this->label.set_x(this->x + this->width + padding);
     this->label.set_y(this->y + (this->height - label.get_height()) / 2);
 }
 
 void GuiCheckBox::set_label_color(int color) {
     label.set_color(color);
+}
+
+void    GuiCheckBox::set_x(int x) {
+    this->x = x;
+    this->x_max = x + width;
+    set_label_size(label.get_size());
+}
+
+void    GuiCheckBox::set_y(int y) {
+    this->y = y;
+    this->y_max = y + height;
+    set_label_size(label.get_size());
+}
+
+void    GuiCheckBox::set_width(int width) {
+    this->width = width;
+    this->x_max = x + width;
+    set_label_size(label.get_size());
+}
+
+void    GuiCheckBox::set_height(int height) {
+    this->height = height;
+    this->y_max = y + height;
+    set_label_size(label.get_size());
 }
 
 void GuiCheckBox::set_check_box_event() {
