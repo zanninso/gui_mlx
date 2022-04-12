@@ -130,8 +130,10 @@ AGuiObject& AGuiObject::operator=(AGuiObject const &other) {
     this->hidden = other.hidden;
     this->is_mouse_on = other.is_mouse_on;
     this->name = other.name;
-    memcpy(this->desing_events, other.desing_events, sizeof(other.desing_events));
-    memcpy(this->mouse_events, other.mouse_events, sizeof(other.mouse_events));
+    for (size_t i = 0; i < 4; i++) {
+        this->desing_events[i] = other.desing_events[i];
+        this->mouse_events[i] = other.mouse_events[i];
+    }
     return *this;
 }
 
@@ -151,7 +153,6 @@ void AGuiObject::mouse_move(int x, int y, void *param) {
             desing_events[MouseMove](x, y, 0, this);
         if (mouse_events[MouseMove] != nullptr)
             mouse_events[MouseMove](x, y, 0, this);
-        
     }
 };
 
