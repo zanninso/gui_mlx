@@ -16,6 +16,7 @@ CXX = g++
 
 CPPFLAGS = -Wall -Wextra -Werror -std=c++11
 CPPFLAGS =  -fsanitize=address -g -O3 -std=c++11
+CPPFLAGS =  -O3 -std=c++11
 
 LIBS = libs
 
