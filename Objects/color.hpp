@@ -1,6 +1,9 @@
 #ifndef COLOR_HPP
 # define COLOR_HPP
 
+# define Color_Transparent          0xffffffff
+# define Color_White                0xffffff
+# define Color_Black                0x000000
 # define Color_CG_Blue              0x007aa5
 # define Color_CG_Red               0xe03c31
 # define Color_Cadet                0x536872
