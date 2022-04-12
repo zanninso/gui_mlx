@@ -77,18 +77,18 @@ bool    GuiDrawer::draw_image(Image &image, Point p, int *data, size_t width, si
 void    GuiDrawer::draw_rectangle(Image &image, Point p1, Point p2, int color)
 {
 	int	i;
-
-	while (p1.y <= p2.y)
-	{
-		i = p1.x;
-		while (i <= p2.x)
+	if ((color >> 24) != 255)
+		while (p1.y <= p2.y)
 		{
-			if (!put_pixel(image, Point(i,  p1.y), color))
-                break;
-			i++;
+			i = p1.x;
+			while (i <= p2.x)
+			{
+				if (!put_pixel(image, Point(i,  p1.y), color))
+					break;
+				i++;
+			}
+			p1.y++;
 		}
-		p1.y++;
-	}
 }
 
 void    GuiDrawer::draw_border(Image &image, Point p1, Point p2, int size, int color)
