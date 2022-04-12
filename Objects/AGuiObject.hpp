@@ -66,9 +66,10 @@ public:
     virtual void    key_press(int keycode,void *param); // we will use it if we do need to get input
     void            set_mouse_event(std::function<void(int x, int y, int button, void *param)> f, GuiMouseEvents event);
     void            set_desing_event(std::function<void(int x, int y, int button, void *param)> f, GuiMouseEvents event);
-    bool            is_hidden() const;
+    
 
     void            set_hidden(bool hide);
+    void            set_enabled(bool hide);
     void            set_color(int color);
     virtual void    set_x(int x);
     virtual void    set_y(int y);
@@ -77,6 +78,8 @@ public:
     void            set_border_color(int color);
     void            set_border_size(int size);
 
+    bool            is_hidden() const;
+    bool            is_enabled() const;
     std::string const& get_name() const;
     int get_x() const;
     int get_y() const;
@@ -215,8 +218,16 @@ bool AGuiObject::is_hidden() const{
     return hidden;
 }
 
+bool AGuiObject::is_enabled() const{
+    return enabled;
+}
+
 void AGuiObject::set_hidden(bool hide) {
     hidden = hide;
+}
+
+void AGuiObject::set_enabled(bool enable) {
+    enabled = enable;
 }
 
 void AGuiObject::set_color(int color) {

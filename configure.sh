@@ -1,7 +1,5 @@
 #!/bin/bash
 
 cd libs/freetype
-./configure --prefix=`pwd`/objs/.libs
+./configure --enable-shared=no --with-bzip2=no --with-brotli=no --with-zlib=no
 make
-mkdir -p objs/.libs/lib
-cp objs/.libs/libfreetype.6.dylib objs/.libs/lib/

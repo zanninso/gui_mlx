@@ -23,16 +23,33 @@ GuiView select_player_view1() {
 
     int cb_size = 30;
     int cb_off = (250 - cb_size) / 2;
+
     GuiCheckBox cb_player(50 + cb_off, 610, "cb_player", "", cb_size);
+    cb_player.checked = true;
     GuiCheckBox cb_remote_player(350 + cb_off, 610, "cb_remote_player", "", cb_size);
     GuiCheckBox cb_ai_player(650 + cb_off, 610, "cb_ai_player", "", cb_size);
+
+    auto cb_click_event = [](int x, int y, int btn, void *param) {
+        GuiCheckBox *self = (GuiCheckBox *)param;
+        if (self) {
+            GuiView *view = (GuiView *)Gui::get().get_object("select_player1");
+            ((GuiCheckBox *)view->get_object("cb_player"))->checked = false;
+            ((GuiCheckBox *)view->get_object("cb_remote_player"))->checked = false;
+            ((GuiCheckBox *)view->get_object("cb_ai_player"))->checked = false;
+            self->checked = true;
+        }
+    };
+
+    cb_player.set_mouse_event(cb_click_event, MouseClick);
+    cb_remote_player.set_mouse_event(cb_click_event, MouseClick);
+    cb_ai_player.set_mouse_event(cb_click_event, MouseClick);
 
     GuiButton btn_next(Point(760, 900), 220, 70, "btn_next", "Next >>");
     // GuiButton btn_prev(Point(20, 900), 220, 70, "btn_prev", "<< Prev");
 
     btn_next.set_mouse_event([](int x, int y, int btn, void *param) {
-            Gui::get().get_object("select_player1")->set_hidden(true);
-            Gui::get().get_object("select_player2")->set_hidden(false);
+        Gui::get().get_object("select_player1")->set_hidden(true);
+        Gui::get().get_object("select_player2")->set_hidden(false);
     }, MouseClick);
 
     select_player.insert_object(select_player_title);
@@ -70,8 +87,24 @@ GuiView select_player_view2() {
     int cb_size = 30;
     int cb_off = (250 - cb_size) / 2;
     GuiCheckBox cb_player(50 + cb_off, 610, "cb_player", "", cb_size);
+    cb_player.checked = true;
     GuiCheckBox cb_remote_player(350 + cb_off, 610, "cb_remote_player", "", cb_size);
     GuiCheckBox cb_ai_player(650 + cb_off, 610, "cb_ai_player", "", cb_size);
+
+    auto cb_click_event = [](int x, int y, int btn, void *param) {
+        GuiCheckBox *self = (GuiCheckBox *)param;
+        if (self) {
+            GuiView *view = (GuiView *)Gui::get().get_object("select_player2");
+            ((GuiCheckBox *)view->get_object("cb_player"))->checked = false;
+            ((GuiCheckBox *)view->get_object("cb_remote_player"))->checked = false;
+            ((GuiCheckBox *)view->get_object("cb_ai_player"))->checked = false;
+            self->checked = true;
+        }
+    };
+
+    cb_player.set_mouse_event(cb_click_event, MouseClick);
+    cb_remote_player.set_mouse_event(cb_click_event, MouseClick);
+    cb_ai_player.set_mouse_event(cb_click_event, MouseClick);
 
     GuiButton btn_next(Point(760, 900), 220, 70, "btn_next", "Next >>");
     GuiButton btn_prev(Point(20, 900), 220, 70, "btn_prev", "<< Prev");
@@ -151,12 +184,28 @@ GuiView game_view() {
     GuiView game(0, 0, 1920, 1080, "game");
     game.set_color(Color_Transparent);
     game.set_hidden(true);
+    
 
-    game.insert_object(GuiImage(0, 0, "goban", "assets/images/goban.xpm"));
+    GuiImage board(0, 0, "goban", "assets/images/goban.xpm");
+    board.set_mouse_event([](int x, int y, int btn, void *param) {
+        GuiView *view = (GuiView *)Gui::get().get_object("game");
+        view->get_object("white_piece")->set_x(std::max(0, x - 50 / 2));
+        view->get_object("white_piece")->set_y(std::max(0, y - 50 / 2));
+        view->get_object("black_piece")->set_x(std::max(0, x - 50 / 2));
+        view->get_object("black_piece")->set_y(std::max(0, y - 50 / 2));
+    }, MouseMove);
 
-    game.insert_object(GuiImage(300, 200, "white piece", "assets/images/white.xpm"));
+    GuiImage black_piece(0, 0, "white_piece", "assets/images/black.xpm");
+    black_piece.set_hidden(true);
+    black_piece.set_enabled(false);
 
-    game.insert_object(GuiImage(300, 250, "black piece", "assets/images/black.xpm"));
+    GuiImage white_piece(0, 0, "black_piece", "assets/images/white.xpm");
+    white_piece.set_hidden(false);
+    white_piece.set_enabled(false);
+
+    game.insert_object(board);
+    game.insert_object(black_piece);
+    game.insert_object(white_piece);
 
     // game.insert_object(btn_next);
     // game.insert_object(btn_prev);

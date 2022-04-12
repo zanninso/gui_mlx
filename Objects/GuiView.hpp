@@ -82,7 +82,7 @@ AGuiObject * GuiView::get_object_by_position(int x, int y) {
     for (auto it = objects.rbegin(); it != end; it++) {
         if (between(x, (*it)->get_x(), (*it)->get_x_max()) && between(y, (*it)->get_y(), (*it)->get_y_max()))
         {
-            if (!(*it)->is_hidden())
+            if (!(*it)->is_hidden() && (*it)->is_enabled())
                 return *it;
         }
     }
