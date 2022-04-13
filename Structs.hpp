@@ -20,18 +20,6 @@ struct FontDim {
         this->width = width;
         this->height = height;
     };
-
-    // FontDim() {};
-
-    // FontDim(FontDim const &other) {
-    //     *this = other;
-    // };
-
-    // FontDim& operator=(FontDim const &other) {
-    //     width = other.width;
-    //     height = other.height;
-    //     return *this;
-    // };
 };
 
 struct	Image {
